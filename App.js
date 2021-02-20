@@ -1,32 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
-import CategoryListItem from './component/CategoryListItem';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Category from './screens/Category';
+import Categories from './screens/Categories';
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cate: [
-        {id: 1, name:"Weather forecast"},
-        {id: 2, name:"Weather forecast"},
-        {id: 3, name:"Weather forecast"},
-        {id: 4, name:"Weather forecast"}
-      ]
-    }
-  }
   render() {
-    const {cate} = this.state;
+
+    const Stack = createStackNavigator();
+
     return (
-      <View style={styles.container}>
-        <FlatList
-          data={cate}
-          renderItem = {({item})=><CategoryListItem cate={item}/>}
-          keyExtractor = {item => `${item.id}`}
-          contentContainerStyle={{paddingRight: 16, paddingLeft: 16}}
-        />
-      <StatusBar style="auto" />
-    </View>
+      <NavigationContainer>
+        <Stack.Navigator>
+            <Stack.Screen name="Home" component={Categories}/>
+            <Stack.Screen 
+              name="Category" 
+              component={Category}
+              options={({route}) => ({title: route.params.itemName})}/>
+        </Stack.Navigator>
+      </NavigationContainer>
     )
   }
 }

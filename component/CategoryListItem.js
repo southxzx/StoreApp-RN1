@@ -3,18 +3,20 @@ import {
     Image,
     View,
     Text,
-    StyleSheet
+    StyleSheet, TouchableOpacity
 } from 'react-native';
 
 import WeatherImage from '../assets/weather-app.png';
 
 export default function CategoryListItem(props){
-    const { cate }=props;
+    const { cate, onPressHandle }=props;
     return (
-    <View style={styles.container}>
-        <Text style={styles.title}>{cate.name}</Text>
-        <Image style={styles.categoryImage} source={WeatherImage}/>
-    </View>
+    <TouchableOpacity onPress={onPressHandle}>
+        <View style={styles.container}>
+            <Text style={styles.title}>{cate.name}</Text>
+            <Image style={styles.categoryImage} source={WeatherImage}/>
+        </View>
+    </TouchableOpacity>
     );
 }
 
