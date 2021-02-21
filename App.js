@@ -18,7 +18,7 @@ export default class App extends Component {
             <Stack.Screen 
               name="Category" 
               component={Category}
-              options={({route}) => ({title: route.params.itemName})}/>
+              options={({route}) => ({title: route.params.nameCate})}/>
         </Stack.Navigator>
       </NavigationContainer>
     )

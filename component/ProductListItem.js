@@ -7,12 +7,12 @@ export default function ProductListItem(props){
         <View style={styles.shadow}>
             <View style={styles.container}>
                 <View style={styles.containerImg}>
-                    <Image style={styles.image} source={product.img}/>
+                    <Image style={styles.image} source={{uri: product.colorProducts[0].images[0]}}/>
                 </View>
                 <View>
-                    <Text style={styles.name}>{product.name}</Text>
+                    <Text style={styles.name}>{product.name.length < 15 ? product.name : product.name.slice(0, 15)+'...'}</Text>
                     <View style={styles.info}>
-                        <Text style={styles.price}>${product.price}</Text>
+                        <Text style={styles.price}>${product.colorProducts[0].price}</Text>
                         <TouchableOpacity>
                             <Text style={styles.buy}>Buy +</Text>
                         </TouchableOpacity>
@@ -43,17 +43,19 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.1,
       shadowRadius: 10,
       shadowOffset: { width: 0, height: 0 },
-      marginBottom: 16
     },
     container: {
         backgroundColor: '#f6f6f6',
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10, 
+        paddingBottom: 10,
+        borderRadius: 5,
     },
     name:{
       textTransform: 'uppercase',
       fontWeight: '700',
-      paddingBottom: 15
+      paddingBottom: 15,
+      fontSize: 12,
     },
     info: {
         flexDirection: 'row',
