@@ -1,17 +1,112 @@
-// import React from 'react';
-// import { createStackNavigator } from '@react-navigation/stack';
-// import { NavigationContainer } from '@react-navigation/native';
-// import Categories from './screens/Categories';
-// import Category from './screens/Category';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Categories from './screens/Categories';
+import Category from './screens/Category';
+import Cart from './screens/Cart';
+import Orders from './screens/Orders';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Settings from './screens/Settings';
 
-// const Stack = createStackNavigator();
+const ShopStack = createStackNavigator();
 
-// export default function RootStack() {
-//     return(
-//         <Stack.Navigator>
-//             <Stack.Screen name="Categories" component={Categories}/>
-//             <Stack.Screen name="Categories" component={Category}/>
-//         </Stack.Navigator>
-//     );
-// }
+function ShopStackScreen() {
+    return(
+        <ShopStack.Navigator>
+            <ShopStack.Screen name="Home" component={Categories}/>
+            <ShopStack.Screen 
+                name="Category" 
+                component={Category}
+                options={({route}) => ({title: route.params.nameCate})}
+            />
+        </ShopStack.Navigator>
+    );
+}
+
+const CartStack = createStackNavigator();
+
+function CartStackScreen(){
+    return(
+        <CartStack.Navigator>
+            <CartStack.Screen name="Cart" component={Cart}/>
+        </CartStack.Navigator>
+    );
+}
+
+const OrdersStack = createStackNavigator();
+
+function OrdersStackScreen() {
+    return(
+        <OrdersStack.Navigator>
+            <OrdersStack.Screen name="Orders" component={Orders} />
+        </OrdersStack.Navigator> 
+    );
+}
+
+const SettingsStack = createStackNavigator();
+
+function SettingsStackScreen() {
+    return(
+        <SettingsStack.Navigator>
+            <SettingsStack.Screen name="Settings" component={Settings} />
+        </SettingsStack.Navigator> 
+    );
+}
+
+const Tab = createBottomTabNavigator();
+
+export default function AppNavigator(){
+    return (
+        <NavigationContainer>
+            <Tab.Navigator
+                contentContainerStyle={{paddingBottom: 16}}
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName;
+            
+                        if (route.name === 'Shop') {
+                            iconName = focused
+                            ? 'ios-home-sharp'
+                            : 'md-home-outline';
+                        } else if (route.name === 'Settings') {
+                            iconName = focused 
+                            ? 'settings-sharp' 
+                            : 'settings-outline';
+                        } else if (route.name === 'Cart'){
+                            iconName = focused 
+                            ? 'cart-sharp' 
+                            : 'cart-outline';
+                        } else if (route.name === 'Orders'){
+                            iconName = focused 
+                            ? 'bookmark' 
+                            : 'bookmark-outline';
+                        }
+                        // You can return any component that you like here!
+                        return (
+                            <View style={styles.container}>
+                                <Ionicons name={iconName} size={32} color={color} />
+                            </View>
+                        );
+                    },
+                    })}
+                tabBarOptions={{
+                    activeTintColor: 'tomato',
+                    inactiveTintColor: 'gray',
+                }}
+            >
+                <Tab.Screen name="Shop" component={ShopStackScreen}/>
+                <Tab.Screen name="Cart" component={CartStackScreen} options={{tabBarBadge : 5}} />
+                <Tab.Screen name="Orders" component={OrdersStackScreen}/>
+                <Tab.Screen name="Settings" component={SettingsStackScreen}/>
+            </Tab.Navigator>
+        </NavigationContainer>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+    }
+})
 
