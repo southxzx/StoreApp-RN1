@@ -18,10 +18,15 @@ export default class extends Component {
             badge: 0
         }
         this.updateBadge();
+
+        // const deleteCart = async() => {
+        //     await AsyncStorage.removeItem('Cart');
+        // }
+        // deleteCart();
     }
 
+    // Thêm sản phẩm
     addToCart(product, qty="1") {
-        console.log("Vo1");
         Alert.alert('Added to cart!');
         let item = [
             {
@@ -29,20 +34,41 @@ export default class extends Component {
                 qty: qty
             }
         ]
-        // console.log(this.state.product, this.state.qty);
-        const storeData = async() => {
+
+        let itemsInCart = [];
+
+        const loadData = async() => {
             try {
-                await AsyncStorage.setItem('Cart',JSON.stringify(item))
+                const data = await AsyncStorage.getItem('Cart');
+                if (data !== null){
+                    itemsInCart  = JSON.parse(data);  
+                    itemsInCart.push(item);   
+                    storeData();
+                    console.log(itemsInCart.length);
+                }
+                else {
+                    itemsInCart.push(item);   
+                    storeData();
+                }
             } catch (error) {
                 console.error(error);
             }
         }
-        storeData();
-        this.updateBadge();
+        loadData(); // Lấy data trong AsyncStorage rồi push sản phẩm mới vào  
+        
+        // Lưu lại data
+        const storeData = async() => {
+            try {
+                await AsyncStorage.setItem('Cart',JSON.stringify(itemsInCart));
+                this.updateBadge();
+            } catch (error) {
+                console.error(error);
+            }
+        }
     }
 
+    // Update chỉ số ở Navbar
     updateBadge(){
-        console.log("Vo2");
         const loadData = async() => {
             try {
                 const data = await AsyncStorage.getItem('Cart');
@@ -61,7 +87,7 @@ export default class extends Component {
     
 
     render() {
-        console.log(this.state.badge + "REdn");
+        //console.log(this.state.badge);
         return (
             <CartContext.Provider value={{
                 badge: this.state.badge,

@@ -1,26 +1,79 @@
 import React from 'react';
-import { FlatList, View, Text, StyleSheet, Image } from 'react-native';
+import { FlatList, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function CartListItem(props) {
 
         const {item} = props;
-
-        return(
+        if (item.length <= 0){
+          return(
+            <View>
+              <Text>Empty Cart</Text>
+            </View>
+          )
+        }
+        else{
+          return(
             <View style={styles.shadow}>
                 <View style={styles.container}>
                     <Image style={styles.image} source={{uri: item.product.colorProducts[0].images[0]}}/>
-                    <View>
-                        <Text >{item.product.name}</Text>
-                        <Text >{item.product.colorProducts[0].price}</Text>
+                    <View style={styles.mid}>
+                        <Text style={styles.name}>{item.product.name}</Text>
+                        <Text style={styles.price}>${item.product.colorProducts[0].price}</Text>
+                    </View>
+                    <View style={styles.qty}>
+                      <TouchableOpacity>
+                        <Icon
+                          style={styles.icon}
+                          name = "minus"
+                          size = {25}
+                          color="#5856d6"
+                        ></Icon>
+                      </TouchableOpacity>
+                      <Text style={styles.qty_number}>1</Text>
+                      <TouchableOpacity>
+                        <Icon
+                          style={styles.icon}
+                          name = "plus"
+                          size = {25}
+                          color="#5856d6"
+                          
+                        ></Icon>
+                      </TouchableOpacity>
                     </View>
                 </View>
             </View>
         )
+        }
+
 }
 const styles = StyleSheet.create({
+    mid: {
+      justifyContent: 'center',
+      paddingLeft: 16, 
+      flex: 1,
+    },
+    qty_number:{
+      fontSize: 16,
+      fontWeight: '700',
+    },
+    icon: {
+      padding: 5,
+      paddingHorizontal: 15
+      //backgroundColor: '#8e8e93',
+      // borderColor: '#8e8e93',
+      // borderWidth: 1,
+      // borderRadius: 15,
+    },
+    qty: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     container: {
       flexDirection: 'row',
       backgroundColor: '#fff',
+      paddingVertical: 10,
       
     },
     containerImg: {
@@ -45,15 +98,13 @@ const styles = StyleSheet.create({
     name:{
       textTransform: 'uppercase',
       fontWeight: '700',
-      paddingBottom: 15,
-      fontSize: 12,
-    },
-    info: {
-        flexDirection: 'row',
+      fontSize: 14,
     },
     price: {
-      flex: 1,
       color: 'red',
+      textTransform: 'uppercase',
+      fontWeight: '700',
+      fontSize: 18
     },
     buy: {
       textTransform: 'uppercase',
