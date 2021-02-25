@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import ProductListItem from '../component/ProductListItem';
 import axios from 'axios';
+import CartProvider from '../provider/CartProvider';
 
 export default class Category extends Component {
   constructor(props) {
@@ -42,7 +43,8 @@ export default class Category extends Component {
 
   render() {
     return (
-      <FlatList
+      <CartProvider>
+        <FlatList
         data={this.state.products}
         contentContainerStyle={styles.container}
         renderItem={({item})=>
@@ -53,6 +55,7 @@ export default class Category extends Component {
         keyExtractor = {item => `${item._id}`}
         numColumns={2}
       />
+      </CartProvider>
     )
   }
 }

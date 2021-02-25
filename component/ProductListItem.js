@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import CartContext from '../context/CartContext';
 
 export default function ProductListItem(props){
+
     const {product} = props;
     return (
         <View style={styles.shadow}>
@@ -13,9 +15,15 @@ export default function ProductListItem(props){
                     <Text style={styles.name}>{product.name.length < 15 ? product.name : product.name.slice(0, 15)+'...'}</Text>
                     <View style={styles.info}>
                         <Text style={styles.price}>${product.colorProducts[0].price}</Text>
-                        <TouchableOpacity>
-                            <Text style={styles.buy}>Buy +</Text>
-                        </TouchableOpacity>
+                        <CartContext.Consumer>
+                          {(
+                            context
+                          )=>(
+                            <TouchableOpacity onPress={() => context.addToCart(product)}>
+                              <Text style={styles.buy}>Buy +</Text>
+                            </TouchableOpacity>
+                          )}
+                        </CartContext.Consumer>
                     </View>
                 </View>
             </View>

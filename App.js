@@ -2,11 +2,14 @@ import 'react-native-gesture-handler';
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
 import AppNavigator from './AppNavigator';
+import CartProvider from './provider/CartProvider';
 
 export default class App extends Component {
   render() {
     return (
-      <AppNavigator></AppNavigator>
+        <AppNavigator>
+        </AppNavigator>
+
     )
   }
 }
