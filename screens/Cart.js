@@ -27,7 +27,6 @@ function Cart() {
                     setItem(JSON.parse(data));
                 }
             } catch (error) {
-                
             }
         }
         loadData();
@@ -45,10 +44,10 @@ function Cart() {
                     data={item}
                     renderItem={({item})=>(
                         <View>
-                            <CartListItem item={item[0]}></CartListItem>
+                            <CartListItem item={item}></CartListItem>
                         </View>
                     )}
-                    keyExtractor = {item => `${item[0].product._id}`}
+                    keyExtractor = {item => `${item.product._id}`}
                 >
                 </FlatList>
             ) : 

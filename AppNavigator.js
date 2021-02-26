@@ -64,7 +64,6 @@ const Tab = createBottomTabNavigator();
 export default function AppNavigator(){
 
     return (
-        <CartProvider>
             <CartContext.Consumer>
                 {({badge}) => (
                     <NavigationContainer>
@@ -112,7 +111,6 @@ export default function AppNavigator(){
                 </NavigationContainer>
                 )}
             </CartContext.Consumer>
-        </CartProvider>
     )
 }
 

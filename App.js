@@ -7,8 +7,9 @@ import CartProvider from './provider/CartProvider';
 export default class App extends Component {
   render() {
     return (
-        <AppNavigator>
-        </AppNavigator>
+      <CartProvider>
+        <AppNavigator/>
+      </CartProvider>
 
     )
   }

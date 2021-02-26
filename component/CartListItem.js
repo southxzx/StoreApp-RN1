@@ -1,50 +1,56 @@
 import React from 'react';
 import { FlatList, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import CartProvider from '../provider/CartProvider';
+import CartContext from '../context/CartContext';
 export default function CartListItem(props) {
 
-        const {item} = props;
-        if (item.length <= 0){
-          return(
-            <View>
-              <Text>Empty Cart</Text>
-            </View>
-          )
-        }
-        else{
-          return(
-            <View style={styles.shadow}>
-                <View style={styles.container}>
-                    <Image style={styles.image} source={{uri: item.product.colorProducts[0].images[0]}}/>
-                    <View style={styles.mid}>
-                        <Text style={styles.name}>{item.product.name}</Text>
-                        <Text style={styles.price}>${item.product.colorProducts[0].price}</Text>
-                    </View>
-                    <View style={styles.qty}>
-                      <TouchableOpacity>
-                        <Icon
-                          style={styles.icon}
-                          name = "minus"
-                          size = {25}
-                          color="#5856d6"
-                        ></Icon>
-                      </TouchableOpacity>
-                      <Text style={styles.qty_number}>1</Text>
-                      <TouchableOpacity>
-                        <Icon
-                          style={styles.icon}
-                          name = "plus"
-                          size = {25}
-                          color="#5856d6"
-                          
-                        ></Icon>
-                      </TouchableOpacity>
-                    </View>
+  const {item} = props;
+  if (item.length <= 0){
+    return(
+      <View>
+        <Text>Empty Cart</Text>
+      </View>
+    )
+  }
+  else{
+    return(
+      <View style={styles.shadow}>
+          <View style={styles.container}>
+              <Image style={styles.image} source={{uri: item.product.colorProducts[0].images[0]}}/>
+              <View style={styles.mid}>
+                  <Text style={styles.name}>{item.product.name}</Text>
+                  <Text style={styles.price}>${item.product.colorProducts[0].price}</Text>
+              </View>
+              <CartContext.Consumer>
+                {(context) => (
+                  <View style={styles.qty}>
+                  <TouchableOpacity>
+                    <Icon
+                      style={styles.icon}
+                      name = "minus"
+                      size = {25}
+                      color="#5856d6"
+                      onPress={()=>context.des(item.product._id)}
+                    ></Icon>
+                  </TouchableOpacity>
+                  <Text style={styles.qty_number}>{item.qty}</Text>
+                  <TouchableOpacity>
+                    <Icon
+                      style={styles.icon}
+                      name = "plus"
+                      size = {25}
+                      color="#5856d6"
+                      onPress={()=>context.inc(item.product._id)}
+                    ></Icon>
+                  </TouchableOpacity>
                 </View>
-            </View>
-        )
-        }
+                )}
+              </CartContext.Consumer>
+          </View>
+      </View>
+  )
+}
 
 }
 const styles = StyleSheet.create({
