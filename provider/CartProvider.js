@@ -7,7 +7,7 @@ import CartContext from '../context/CartContext';
 export default class extends Component {
     constructor(props){
         super(props);
-        // this.state = {
+        // this.state = {   
         //     product:{
         //     },
         //     qty: 0

@@ -1,25 +1,30 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React, { Component } from 'react';
+import React, {useState, useEffect } from 'react';
 import {View,FlatList} from 'react-native';
 import CartContext from '../context/CartContext';
 import CartListItem from '../component/CartListItem';
+import { useIsFocused } from '@react-navigation/native';
+// import { withNavigationFocus } from 'react-navigation'; // Ver 1xx, ngày nay dùng hook
 
-export default class Cart extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            item: []
-        }
-        this.fetchCart();
-    }
+function Cart() {
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         item: []
+    //     }
+    //     this.fetchCart();
+        
+    // }
+    const isFocused = useIsFocused();
 
-    fetchCart() {
+    const [item,setItem] = useState([]);
+
+    const fetchCart = () => {
         const loadData = async () => {
             try {
                 const data = await AsyncStorage.getItem('Cart');
                 if (data !== null){
-                    this.setState({item: JSON.parse(data)});
-                    console.log(JSON.parse(data));
+                    setItem(JSON.parse(data));
                 }
             } catch (error) {
                 
@@ -27,13 +32,17 @@ export default class Cart extends Component {
         }
         loadData();
     }
+    useEffect(() => {
+        fetchCart();
+        return () => {
+        }
+    }, [isFocused])
 
-    render() {
-        console.log(this.state.item.length);
-        if (this.state.item.length > 0){
-            return (
+    return(
+        <View>
+            {item ? (
                 <FlatList
-                    data={this.state.item}
+                    data={item}
                     renderItem={({item})=>(
                         <View>
                             <CartListItem item={item[0]}></CartListItem>
@@ -42,12 +51,16 @@ export default class Cart extends Component {
                     keyExtractor = {item => `${item[0].product._id}`}
                 >
                 </FlatList>
-            )
-        }
-        else{
-            return(
+            ) : 
+            (
                 <CartListItem item={[]}></CartListItem>
-            )
-        }
-    }
+            )}
+        </View>
+    )
 }
+
+export default Cart
+
+
+
+
