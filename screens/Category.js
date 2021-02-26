@@ -43,7 +43,6 @@ export default class Category extends Component {
 
   render() {
     return (
-      <CartProvider>
         <FlatList
         data={this.state.products}
         contentContainerStyle={styles.container}
@@ -55,7 +54,6 @@ export default class Category extends Component {
         keyExtractor = {item => `${item._id}`}
         numColumns={2}
       />
-      </CartProvider>
     )
   }
 }

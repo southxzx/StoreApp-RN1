@@ -17,7 +17,8 @@ export default class extends Component {
         this.des = this.des.bind(this);
         this.inc = this.inc.bind(this);
         this.state = {
-            badge: 0
+            badge: 0,
+            cart: []
         }
         this.updateBadge();
 
@@ -33,10 +34,16 @@ export default class extends Component {
         try {
             await AsyncStorage.setItem('Cart',JSON.stringify(data));
             this.updateBadge();
+            this.setState({
+                cart: data
+            })
         } catch (error) {
             console.error(error);
         }
     }
+
+    // Kiểm tra trùng id
+    
 
     // Thêm sản phẩm
     addToCart(product, qty="1") {
@@ -52,12 +59,23 @@ export default class extends Component {
         const loadData = async() => {
             try {
                 const data = await AsyncStorage.getItem('Cart');
+                // Nếu storage đã có rồi thì push vào cái cũ
                 if (data !== null){
                     itemsInCart  = JSON.parse(data);  
-                    itemsInCart.push(item);   
-                    this.storeData(itemsInCart);
+                    // Tìm id trong cart xem có trùng sản phẩm không
+                    const index = itemsInCart.findIndex(x => x.product._id === item.product._id);
+                    if (index !== -1){
+                        // Nếu trùng gọi hàm tăng số lượng
+                        this.inc(item.product._id)
+                    }
+                    else{
+                        // Không thì push vào mới
+                        itemsInCart.push(item);   
+                        this.storeData(itemsInCart);
+                    }   
                     // console.log(itemsInCart.length);
                 }
+                // Nếu storage rỗng thì thêm mới
                 else {
                     itemsInCart.push(item);   
                     this.storeData(itemsInCart);
@@ -151,7 +169,8 @@ export default class extends Component {
                 badge: this.state.badge,
                 addToCart: this.addToCart,
                 des: this.des,
-                inc: this.inc
+                inc: this.inc,
+                cart: this.state.cart
             }}>
                 {this.props.children}
             </CartContext.Provider>
